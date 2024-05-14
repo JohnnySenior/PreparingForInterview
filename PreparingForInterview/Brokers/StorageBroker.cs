@@ -8,6 +8,9 @@ namespace PreparingForInterview.Brokers
     {
         public DbSet<Client> Client { get; set; }
 
+        public StorageBroker() =>
+            this.Database.EnsureCreated();
+
         public async ValueTask<Client> InsertClientAsync(Client client)
         {
             await this.Client.AddAsync(client);

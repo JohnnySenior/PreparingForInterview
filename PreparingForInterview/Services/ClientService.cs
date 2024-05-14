@@ -4,7 +4,7 @@ using PreparingForInterview.Models;
 
 namespace PreparingForInterview.Services
 {
-	public class ClientService : IClientService
+	public partial class ClientService : IClientService
 	{
 		private readonly IStorageBroker storageBroker;
 		private readonly ILoggingBroker loggingBroker;
@@ -15,7 +15,11 @@ namespace PreparingForInterview.Services
 			this.loggingBroker = loggingBroker;
 		}
 
-		public async ValueTask<Client> AddClientAsync(Client client) =>
-			await this.storageBroker.InsertClientAsync(client);
+		public ValueTask<Client> AddClientAsync(Client client) =>
+		TryCatch(async () =>
+		{
+			ClientNotNull(client);
+			return await this.storageBroker.InsertClientAsync(client);
+		});
 	}
 }
